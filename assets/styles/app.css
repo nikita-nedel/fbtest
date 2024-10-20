@@ -1,0 +1,17 @@
+body {
+    background-color: lightgray;
+}
+
+.login_wrapper {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.main_wrapper {
+    padding-top: 150px;
+    padding-bottom: 150px;
+}

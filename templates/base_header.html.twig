@@ -1,0 +1,32 @@
+<div class="header fixed-top">
+  <nav class="py-2 border-bottom bg-dark">
+    <div class="container d-flex flex-wrap">
+      <ul class="nav me-auto">
+        <li class="nav-item"><a href="/" class="nav-link link-light px-2 active" aria-current="page">Home</a>
+        </li>
+        {% if is_granted('ROLE_ADMIN') %}
+          <li class="nav-item"><a href="{{ url('admin_index') }}" class="nav-link link-light px-2">Administration</a></li>
+        {% endif %}
+      </ul>
+      {% if app.user %}
+        <div class="dropdown text-end">
+          <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+          </a>
+          <ul class="dropdown-menu text-small" style="">
+            <li><a class="dropdown-item" href="#">New project...</a></li>
+            <li><a class="dropdown-item" href="#">Settings</a></li>
+            <li><a class="dropdown-item" href="#">Profile</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="{{ url('app_logout') }}">Sign out</a></li>
+          </ul>
+        </div>
+      {% else %}
+        <ul class="nav">
+          <li class="nav-item"><a href="{{ url('app_login') }}" class="nav-link link-light px-2">Sign in</a></li>
+          <li class="nav-item"><a href="{{ url('app_register') }}" class="nav-link link-light px-2">Sign up</a></li>
+        </ul>
+      {% endif %}
+    </div>
+  </nav>
+</div>
