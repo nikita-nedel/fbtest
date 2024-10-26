@@ -4,8 +4,9 @@
       <ul class="nav me-auto">
         <li class="nav-item"><a href="/" class="nav-link link-light px-2 active" aria-current="page">Home</a>
         </li>
-        {% if is_granted('ROLE_ADMIN') %}
-          <li class="nav-item"><a href="{{ url('admin_index') }}" class="nav-link link-light px-2">Administration</a></li>
+        {% if is_granted('ROLE_USER') %}
+          <li class="nav-item"><a href="{{ url('currencies_list') }}" class="nav-link link-light px-2">Show currencies</a></li>
+          <li class="nav-item"><a href="{{ url('currencies_manage') }}" class="nav-link link-light px-2">Manage currencies</a></li>
         {% endif %}
       </ul>
       {% if app.user %}
@@ -14,11 +15,7 @@
             <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
           </a>
           <ul class="dropdown-menu text-small" style="">
-            <li><a class="dropdown-item" href="#">New project...</a></li>
-            <li><a class="dropdown-item" href="#">Settings</a></li>
-            <li><a class="dropdown-item" href="#">Profile</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="{{ url('app_logout') }}">Sign out</a></li>
+            <li><a class="dropdown-item" href="#">{{ app.user.email }}</a></li>
           </ul>
         </div>
       {% else %}

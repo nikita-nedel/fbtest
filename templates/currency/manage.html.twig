@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+  {{ title }}
+{% endblock %}
+{% block body %}
+  <h2>Manage currencies</h2>
+  <table class="table table-hover table-primary">
+    <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Currency name</th>
+      <th scope="col">Code</th>
+      <th scope="col">Available</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for key, currency in currencies %}
+      <tr>
+        <th scope="row">{{ currency.id }}</th>
+        <td>{{ currency.name }}</td>
+        <td>{{ currency.code }}</td>
+        <td>
+          <div class="form-check form-switch">
+            <input
+                class="form-check-input currency-available"
+                type="checkbox"
+                id="flexSwitchCheckChecked"
+                {% if currency.isActive %} checked {% endif %}
+                data-id="{{ currency.id }}">
+          </div>
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+  <script>
+      document.addEventListener('DOMContentLoaded', function() {
+          const checkboxes = document.querySelectorAll('.currency-available');
+
+          checkboxes.forEach(checkbox => {
+              checkbox.addEventListener('change', function() {
+                  const currencyId = this.getAttribute('data-id');
+                  const isAvailable = this.checked;
+
+                  fetch('{{ url('currencies_availability') }}', {
+                      method: 'POST',
+                      headers: {
+                          'Content-Type': 'application/json',
+                      },
+                      body: JSON.stringify({ currencyId: currencyId, isAvailable: isAvailable }),
+                  })
+                      .then(response => response.json())
+                      .then(data => {
+                          console.log('Success:', data);
+                      })
+                      .catch((error) => {
+                          console.error('Error:', error);
+                      });
+              });
+          });
+      });
+  </script>
+{% endblock %}
