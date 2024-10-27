@@ -3,27 +3,29 @@
   {{ title }}
 {% endblock %}
 {% block body %}
-  {% if currencies|length %}
-    <h2>Currencies</h2>
-    <table class="table table-hover table-primary">
-      <thead>
-      <tr>
-        <th scope="col">ID</th>
-        <th scope="col">Currency name</th>
-        <th scope="col">Code</th>
-      </tr>
-      </thead>
-      <tbody>
-      {% for key, currency in currencies %}
+  <div class="container mt-5">
+    {% if currencies|length %}
+      <h2>Currencies</h2>
+      <table class="table table-hover table-primary">
+        <thead>
         <tr>
-          <th scope="row">{{ currency.id }}</th>
-          <td>{{ currency.name }}</td>
-          <td>{{ currency.code }}</td>
+          <th scope="col">ID</th>
+          <th scope="col">Currency name</th>
+          <th scope="col">Code</th>
         </tr>
-      {% endfor %}
-      </tbody>
-    </table>
-  {% else %}
-    <h2>No results found</h2>
-  {% endif %}
+        </thead>
+        <tbody>
+        {% for key, currency in currencies %}
+          <tr>
+            <th scope="row">{{ currency.id }}</th>
+            <td>{{ currency.name }}</td>
+            <td>{{ currency.code }}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <h2>No results found</h2>
+    {% endif %}
+  </div>
 {% endblock %}

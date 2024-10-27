@@ -1,5 +1,80 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Currency Converter{% endblock %}
+
 {% block body %}
-  <h2>Click to check currencies</h2>
+  {% if currencies|length %}
+    <div class="container mt-5">
+      <h1 class="mb-4">Currency Converter</h1>
+      <form id="currency-converter-form" class="row g-3">
+        <div class="col-md-4">
+          <label for="base-currency" class="form-label">Base Currency:</label>
+          <select id="base-currency" name="base-currency" class="form-select">
+            {% for currency in currencies %}
+              <option value="{{ currency.id }}">{{ currency.code }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="col-md-4">
+          <label for="target-currency" class="form-label">Target Currency:</label>
+          <select id="target-currency" name="target-currency" class="form-select">
+            {% for currency in currencies %}
+              <option value="{{ currency.id }}">{{ currency.code }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="col-md-4">
+          <label for="amount" class="form-label">Amount:</label>
+          <input type="number" id="amount" name="amount" class="form-control" step="0.01" placeholder="Enter amount" required />
+        </div>
+
+        <div class="col-12">
+          <button type="button" class="btn btn-primary" onclick="convertCurrency()">Convert</button>
+        </div>
+      </form>
+
+      <div id="result" class="mt-4"></div>
+    </div>
+
+    <script>
+        function convertCurrency() {
+            const baseCurrency = document.getElementById('base-currency').value;
+            const targetCurrency = document.getElementById('target-currency').value;
+            const amount = document.getElementById('amount').value;
+
+            const data = {
+                baseCurrency: baseCurrency,
+                targetCurrency: targetCurrency,
+                amount: amount
+            };
+
+            fetch('{{ path('currencies_convert') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': '{{ csrf_token('currency_conversion') }}' // Assuming you have csrf protection
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        document.getElementById('result').innerText = `Error: ${data.error}`;
+                    } else {
+                        document.getElementById('result').innerText = `Converted amount: ${data[0]['convertedAmount']} ${data[0]['symbol']}`;
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+        }
+    </script>
+  {% else %}
+    <div class="container mt-5">
+      <h2>You must upload currencies from freecurrency. (look for a command in readme)</h2>
+    </div>
+  {% endif %}
 {% endblock %}

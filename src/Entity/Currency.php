@@ -19,11 +19,14 @@ class Currency
     #[ORM\Column(length: 255)]
     private ?string $code = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 100, nullable: true)]
     private ?string $symbol = null;
 
-    #[ORM\Column]
-    private ?bool $isActive = null;
+    #[ORM\Column(nullable: true)]
+    private ?float $rate = null;
+
+    #[ORM\Column(options: ['default' => 0])]
+    private ?bool $isAvailable = null;
 
     public function getId(): ?int
     {
@@ -59,21 +62,33 @@ class Currency
         return $this->symbol;
     }
 
-    public function setSymbol(string $symbol): static
+    public function setSymbol(?string $symbol): static
     {
         $this->symbol = $symbol;
 
         return $this;
     }
 
-    public function isActive(): ?bool
+    public function getRate(): ?float
     {
-        return $this->isActive;
+        return $this->rate;
     }
 
-    public function setActive(bool $isActive): static
+    public function setRate(?float $rate): static
     {
-        $this->isActive = $isActive;
+        $this->rate = $rate;
+
+        return $this;
+    }
+
+    public function isAvailable(): ?bool
+    {
+        return $this->isAvailable;
+    }
+
+    public function setAvailable(bool $isAvailable): static
+    {
+        $this->isAvailable = $isAvailable;
 
         return $this;
     }

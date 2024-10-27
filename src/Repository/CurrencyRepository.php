@@ -16,30 +16,26 @@ class CurrencyRepository extends ServiceEntityRepository
         parent::__construct($registry, Currency::class);
     }
 
-        /**
-         * @return Currency[] Returns an array of Currency objects
-         */
-        public function findAllActive(): array
-        {
-            return $this->createQueryBuilder('c')
-                ->andWhere('c.isActive = 1')
-                ->orderBy('c.id', 'ASC')
-                ->getQuery()
-                ->getResult()
-            ;
-        }
-
     /**
-     * @param int $value
-     * @return Currency|null
+     * @return Currency[] Returns an array of Currency objects
      */
+    public function findAllActive(): array
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.isAvailable = 1')
+            ->orderBy('c.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     public function findOneById(int $value): ?Currency
-        {
-            return $this->createQueryBuilder('c')
-                ->andWhere('c.id = :val')
-                ->setParameter('val', $value)
-                ->getQuery()
-                ->getOneOrNullResult()
-            ;
-        }
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.id = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }

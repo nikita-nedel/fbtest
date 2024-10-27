@@ -3,36 +3,38 @@
   {{ title }}
 {% endblock %}
 {% block body %}
-  <h2>Manage currencies</h2>
-  <table class="table table-hover table-primary">
-    <thead>
-    <tr>
-      <th scope="col">ID</th>
-      <th scope="col">Currency name</th>
-      <th scope="col">Code</th>
-      <th scope="col">Available</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for key, currency in currencies %}
+  <div class="container mt-5">
+    <h2>Manage currencies</h2>
+    <table class="table table-hover table-primary">
+      <thead>
       <tr>
-        <th scope="row">{{ currency.id }}</th>
-        <td>{{ currency.name }}</td>
-        <td>{{ currency.code }}</td>
-        <td>
-          <div class="form-check form-switch">
-            <input
-                class="form-check-input currency-available"
-                type="checkbox"
-                id="flexSwitchCheckChecked"
-                {% if currency.isActive %} checked {% endif %}
-                data-id="{{ currency.id }}">
-          </div>
-        </td>
+        <th scope="col">ID</th>
+        <th scope="col">Currency name</th>
+        <th scope="col">Code</th>
+        <th scope="col">Available</th>
       </tr>
-    {% endfor %}
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+      {% for key, currency in currencies %}
+        <tr>
+          <th scope="row">{{ currency.id }}</th>
+          <td>{{ currency.name }}</td>
+          <td>{{ currency.code }}</td>
+          <td>
+            <div class="form-check form-switch">
+              <input
+                  class="form-check-input currency-available"
+                  type="checkbox"
+                  id="flexSwitchCheckChecked"
+                  {% if currency.isAvailable %} checked {% endif %}
+                  data-id="{{ currency.id }}">
+            </div>
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
 
   <script>
       document.addEventListener('DOMContentLoaded', function() {

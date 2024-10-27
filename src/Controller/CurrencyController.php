@@ -47,4 +47,32 @@ class CurrencyController extends AbstractController
 
         return new JsonResponse(['data' => 'Success']);
     }
+
+    #[Route('/convert', name: 'currencies_convert', methods: ['POST'])]
+    public function convertAction(Request $request)
+    {
+        $data = json_decode($request->getContent(), true);
+
+        $baseCurrency = $data['baseCurrency'];
+        $targetCurrency = $data['targetCurrency'];
+        $amount = $data['amount'];
+
+        try {
+
+            $convertedAmount = $this->currencyService->convert(
+                amount: $amount,
+                currencyFromId: $baseCurrency,
+                currencyToId: $targetCurrency
+            );
+
+            return new JsonResponse(
+                [
+                    $convertedAmount
+                ],
+                Response::HTTP_OK
+            );
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+        }
+    }
 }
