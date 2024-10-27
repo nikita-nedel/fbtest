@@ -19,6 +19,10 @@ class CurrencyController extends AbstractController
     #[Route('/all', name: 'currencies_list', methods: ['GET'])]
     public function listAction(): Response
     {
+        if (!$this->isGranted('ROLE_USER')) {
+            throw $this->createAccessDeniedException();
+        }
+
         return $this->render('currency/list.html.twig', [
             'currencies' => $this->currencyService->getActiveCurrencies(),
             'title' => 'Currencies'
@@ -28,6 +32,10 @@ class CurrencyController extends AbstractController
     #[Route('/manage', name: 'currencies_manage', methods: ['GET'])]
     public function manageCurrencies(): Response
     {
+        if (!$this->isGranted('ROLE_USER')) {
+            throw $this->createAccessDeniedException();
+        }
+
         $allCurrencies = $this->currencyService->getAllCurrencies();
 
         return $this->render('currency/manage.html.twig', [

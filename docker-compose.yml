@@ -10,7 +10,7 @@ services:
       - "8888:80"
     volumes:
       - ./:/app
-    restart: always
+    #restart: always
     depends_on:
       - db
 
@@ -23,7 +23,7 @@ services:
       - ./:/app
     depends_on:
       - nginx
-    restart: always
+    #restart: always
 
   db:
     container_name: db
