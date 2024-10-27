@@ -1,0 +1,3 @@
+cron_jobs:
+  - schedule: "*/1 * * * *"
+    command: "/usr/local/bin/php /app/bin/console app:update-currency-rates >> /var/log/script.log 2>&1"

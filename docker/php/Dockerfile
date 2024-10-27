@@ -10,7 +10,7 @@ RUN apt-get update && \
     libgd-dev libmcrypt-dev bzip2 \
     libbz2-dev libtidy-dev libcurl4-openssl-dev \
     libz-dev libmemcached-dev libxslt-dev libpq-dev \
-    libzip4 libzip-dev libwebp-dev
+    libzip4 libzip-dev libwebp-dev npm nano
 
 # PHP Configuration
 RUN docker-php-ext-install bcmath bz2 calendar  dba exif gettext iconv intl soap tidy xsl zip&&\
@@ -26,8 +26,17 @@ RUN docker-php-ext-install bcmath bz2 calendar  dba exif gettext iconv intl soap
     curl -sS https://getcomposer.org/installer | php \
             && mv composer.phar /usr/bin/composer
 
-#COPY /docker/php/entrypoint-dev.sh /init/entrypoint.sh
+COPY . /app
+
+RUN composer install --optimize-autoloader --ignore-platform-reqs
+
+RUN npm install --quiet && npm run build --quiet
+
+#RUN php /app/src/cronjob.php
+RUN echo "*/1 * * * * /usr/local/bin/php /app/bin/console app:update-currency-rates >> /var/log/cron.log 2>&1" > /etc/cron.d/my-cron
+RUN chmod 0644 /etc/cron.d/my-cron
+RUN crontab /etc/cron.d/my-cron
 
 EXPOSE 9000
 
-#ENTRYPOINT /init/entrypoint.sh
+CMD ["cron", "-f"]
