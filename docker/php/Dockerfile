@@ -33,10 +33,10 @@ RUN composer install --optimize-autoloader --ignore-platform-reqs
 RUN npm install --quiet && npm run build --quiet
 
 #RUN php /app/src/cronjob.php
-RUN echo "*/1 * * * * /usr/local/bin/php /app/bin/console app:update-currency-rates >> /var/log/cron.log 2>&1" > /etc/cron.d/my-cron
+RUN echo "0 0 * * * /usr/local/bin/php /app/bin/console app:update-currency-rates >> /var/log/cron.log 2>&1" > /etc/cron.d/my-cron
 RUN chmod 0644 /etc/cron.d/my-cron
 RUN crontab /etc/cron.d/my-cron
 
 EXPOSE 9000
 
-CMD ["cron", "-f"]
+#CMD ["cron", "-f"]
